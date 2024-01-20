@@ -1,35 +1,41 @@
 package com.example.auto;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
+import android.os.Handler;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
-    Button btn;
-    RadioButton R1,R2,RG1,RG2;
+
+    private ProgressBar progressBar;
+    private TextView progressText;
+    int i = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button bttn=(Button)findViewById(R.id.btn);
-        R1=(RadioButton)findViewById(R.id.R1);
-        R2=(RadioButton)findViewById(R.id.R2);
-        RG1=(RadioButton) findViewById(R.id.RG1);
-        RG2=(RadioButton)findViewById(R.id.RG2);
-        bttn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                {
-                    String result = "selected Button"+"\n";
-                    result += (R1.isChecked()) ? "Radio Button 1"+"\n": (R2.isChecked()) ? "Radio Button 2"+"\n" : "";
-                   String res=(RG1.isChecked()) ? "Male"+"\n" : (RG2.isChecked()) ? "Female"+"\n" : "";
 
-                    Toast.makeText(getApplicationContext(), result+res,Toast.LENGTH_LONG).show();
+        // set the id for the progressbar and progress text
+        progressBar = findViewById(R.id.progress_bar);
+        progressText = findViewById(R.id.progress_text);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // set the limitations for the numeric
+                // text under the progress bar
+                if (i <= 100) {
+                    progressText.setText("" + i);
+                    progressBar.setProgress(i);
+                    i++;
+                    handler.postDelayed(this, 200);
+                } else {
+                    handler.removeCallbacks(this);
                 }
             }
-        });
+        }, 200);
     }
 }
-
